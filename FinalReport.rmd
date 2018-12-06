@@ -1,16 +1,30 @@
 ---
-title: "Abacavirinol"
-author: "Put your name here!"
-date: "put the date here"
+title: "Final2018"
+author: "Miguel Herrera"
+date: "12/5/2018"
 output: html_document
 ---
 
 ```{r include=FALSE,echo=FALSE}
 require(tidyverse)
 require(tigerstats)
-abac <-read.csv(file="abacavirinol.csv",header=TRUE)
 ```
 
+```{r}
+abac <-read.csv(file="abacavirinol.csv",header=TRUE)
+```
+```{r}
+LBGT=filter(abac,LBGT=="yes")
+```
+```{r}
+Ivdrugguys=filter(abac,Ivdrug=="user")
+```
+```{r}
+females=filter(abac,sex=="F")
+```
+```{r}
+males=filter(abac,sex=="M")
+```
 # Introduction
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
@@ -20,6 +34,7 @@ A new  preventative aides (abacavirinol) is under test in clinical trials. Analy
 # Methods
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+The methods used to test effectiveness of this drug were provided by running barcharts, numerical summaries, and chisquared/fisher's exact test.    
 
 #Results
 
@@ -29,13 +44,135 @@ A new  preventative aides (abacavirinol) is under test in clinical trials. Analy
 
 ### Graphical Descriptive Results
 
+```{r}
+barchartGC(~infected+treatment,data=abac,type = "percent", main= "Everyone")
+```
+    
+The bar chart above shows data of all groups such drug users, males and females, and finally all those who identify as LBGT. The data suggests that people who took the drug are less likely to contract aids and people who took the placebo are more likely to contractact aids. About 60% of the people who took the placebo acuired aids, and the people who took the medication being tested were less likely to contract aids. Overall the medication does seem to help prevent the contraction of aids. 
+
+ 
+```{r}
+barchartGC(~infected+treatment,data=females,type = "percent", main= "Only Females")
+```
+  
+Based on the barchart above the drug does not appear to be working for the females. Around 60% of females contracted aids with the medication compared to the 40% that did not contract aids. Thus meaning that females are more likely to contract aids with the medication itself. 
+
+```{r}
+barchartGC(~infected+treatment,data=males,type = "percent", main="Only Males")
+```
+
+The data shown above suggest that the drug works on males. about 65% of males who took the placebo contracted aids. thats a higher percentaje of males from those who use the drug wich is about 35% of males. Therefore males who who did take the medication are more likely to not to contract aids. 
+
+```{r}
+barchartGC(~infected+treatment,data=Ivdrugguys,type = "percent", main="IVDrug USER")
+```
+  
+The chart above represents the results of medication and placebo effects on drug users. Overall it seems that the medication has a positive effect on these types of people. About 75% of the drug users who took the medication were aids free compared to around 25% of them who did contract aids. On the other hand almost 60% of the people who took the placebo did contract aids compared to 40% of the people who took the placebo who did not contract aids.  
+
+```{r}
+barchartGC(~infected+treatment,data=LBGT, type ="percent", main="LBGT")
+```
+
+The Chart above represents the results of the medication and placebo effects on people who identify as LBGT. What we can gather from this data is the medication is infact not helping reduce the contraction of aids and in fact causing more cases of aids being contracted among the LBGT members. Around 60% of the people who took the drug did in fact contract aids compared to 40% who did not contract aids. Overall the drug is not working.  
+
+
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
-### Numerical Descriptive Results
+## Numerical Descriptive Results
+### Everyone
+
+```{r}
+table1 <- xtabs(~infected + treatment, data=abac)
+rowPerc(table1)
+colPerc(table1)
+```
+
+The table above represents everyone who took part in this experiment and explains the percentage of people who contracted aids and people who did not contract aids and will help determine if the drug is working or not. Those who contracted aids 40.93% of them had taken the medication being tested and 59.07% of them had taken the placebo. On the other had there was a higher percentage of people who did not contract aids from taking the medication. 49.10 percent of the people who took the drug did not contract aids and 50.90 took the placebo and did not contract aids. The 2nd data set shows the ration of people who effected by the drug. People who took the drug have a 5:95 ratio to contract aids and 5:95 to contracting aids from taking the placebo.   
+
+
+### Females
+
+```{r}
+table2 <- xtabs(~infected + treatment, data=females)
+rowPerc(table2)
+colPerc(table2)
+```
+
+The second table above represents only the women from this experiment. those who contracted aids 59.30 took the medication and 40.70% took the placebo. in the other hand, there was a lower percentaje of people who didn't get aids. the number 48.47 took the medication and 51.53 took the placebo. Overall the medication doesn't appear to be make a difference on females. 
+The 2nd data set shows the ration of people who effected by the drug. People who took the drug have a 4:96 chance to contract aids by taking the drug and 3:97 have a chance of contracting aids by taking the placebo.
+
+### Males
+
+```{r}
+table3 <- xtabs(~infected + treatment, data=males)
+rowPerc(table3)
+colPerc(table3)
+```
+
+The third table above represents only the males from this experiment. Those who contracted aids 30.46% took the medication being tested and 69.54 took the placebo. On the other hand more people did not contract aids from the medication. 49.86 of males took the medication and did not contract aids and 50.14 took the placebo and did not get aids. Overall the medication seems to be working for males. The 2nd data also shows that 5:95 people will contract aids from the medication and 8:92 will contract aids from the placebo.  
+
+
+### IV drug Users
+```{r}
+table4 <- xtabs(~infected + treatment, data=Ivdrugguys)
+rowPerc(table4)
+colPerc(table4)
+```
+
+The fourth table above represents only the drug users from this experiment. Those who contracted aids 25.64% took the medication and 74.36% took the placebo. On the other hand more people did not contract aids from the medication. 45.66% took the medication and did not contract aids and 54.34% took the placebo and did not contract aids. Overall the medication seems to be working for the drug users. The 2nd data also shows 3:97 will contract aids from the medication and 7:93 will contract aids from the placebo.
+
+
+###LBGT
+```{r}
+table5 <- xtabs(~infected + treatment, data=LBGT)
+rowPerc(table5)
+colPerc(table5)
+```
+  
+The final table above represents only the LBGT members from the experiment. Those who contracted aids 68.97 took the medication and 31.03 took the placebo. On the other hand the medication does not seem to be working due to there being less people who bennefited from the medication. Only 50.17 did not contract aids from the medication and 49.83 from the placebo. Overall the medication does not seem to be working for the LBGT members. The 2nd data further proves this with 7:93 contract aids from the medication and 3:97 contract aids from the placebo.  
+
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ## Inferential Results
+
+### Everyone
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+### Females
+```{r}
+chisq.test(table2)
+chisqtestGC(table2)
+fisher.test(table2)
+```
+
+### Males
+```{r}
+chisq.test(table3)
+chisqtestGC(table3)
+fisher.test(table3)
+```
+
+### IV Drug user 
+```{r}
+chisq.test(table4)
+chisqtestGC(table4)
+fisher.test(table4)
+```
+
+### LBGT
+```{r}
+chisq.test(table5)
+chisqtestGC(table5)
+fisher.test(table5)
+```
+### Summary of all chi- squared and fisher exact test.
+
+To summarize we have found that all the test come to the same results of being dependent of each other, we can't isolate an specific set of data without the others. to explain the effects of the medication in one group we require the subject that is being tested on. ex, if we want to know the outcome of wheter the drug is working or not in a specific group, we relay on the other groups data to be able to come up with its own conclusion.
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
 
@@ -43,3 +180,8 @@ A new  preventative aides (abacavirinol) is under test in clinical trials. Analy
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+In conclusion we have tested and graphed the different effects of the medication across the board by creating subgroups of gender, drug users, and LBGT members. What we found from the multiple test ran that the medication seems to be most effective within the males and drug users subgroups. Both groups saw higher percentages of the medication resulting in lower number of aids free patients and further proved through the bar charts and table percentage representing each. We also found that women and LBGT members were more negatively effected by this particular medication and in fact cause more results of testing positive for aids.  Finally we ran the chisquare and fisher’s exact tests to determine that all the data sets were depenent of each other due to the low p-value averaging 0.07 in all test ran. Meaning that no one variable could be isolated because we relay on the others to be able to come to a conclusion of a specific group.   
+
+
+
